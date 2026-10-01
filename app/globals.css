@@ -85,6 +85,14 @@ body {
   animation: plaque-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+/* Hidden from first paint so the hero layers don't flash before GSAP takes over;
+   GSAP's inline opacity overrides this once it runs. */
+@media (prefers-reduced-motion: no-preference) {
+  .pre-anim {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-plaque-in,
   .animate-marquee {

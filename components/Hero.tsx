@@ -215,25 +215,25 @@ export default function Hero() {
           ref={birdGroup1Ref}
           src="/bird_group_1_for_cloud_1.png"
           alt=""
-          className="w-[26vw] max-w-[260px] object-contain"
+          className="pre-anim w-[26vw] max-w-[260px] object-contain"
         />
       </div>
 
       {/* left side, much closer to camera than Bird Group 1 — big, strong foreground presence */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-start pl-[4vw]">
-        <img ref={bird2aRef} src="/bird_2.png" alt="" className="w-[34vw] max-w-[420px] object-contain" />
+        <img ref={bird2aRef} src="/bird_2.png" alt="" className="pre-anim w-[34vw] max-w-[420px] object-contain" />
       </div>
 
       <img
         ref={cloud2Ref}
         src="/cloud_2.png"
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        className="pre-anim absolute inset-0 h-full w-full object-cover"
       />
 
       {/* left side, close — different depth/position from Bird 1 and Bird Group 2 */}
       <div className="pointer-events-none absolute inset-0 flex items-start justify-start pl-[12vw] pt-[16vh]">
-        <img ref={bird2bRef} src="/bird_2.png" alt="" className="w-[28vw] max-w-[340px] object-contain" />
+        <img ref={bird2bRef} src="/bird_2.png" alt="" className="pre-anim w-[28vw] max-w-[340px] object-contain" />
       </div>
 
       {/* left side, very small — much farther than Bird Group 1, deep inside Cloud 2 */}
@@ -242,23 +242,23 @@ export default function Hero() {
           ref={birdGroup2Ref}
           src="/bird_group_2_for_cloud_2.png"
           alt=""
-          className="w-[14vw] max-w-[140px] object-contain"
+          className="pre-anim w-[14vw] max-w-[140px] object-contain"
         />
       </div>
 
       <div
         ref={mistARef}
-        className="pointer-events-none absolute inset-0"
+        className="pre-anim pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse 60% 40% at 30% 60%, rgba(255,255,255,0.55), transparent 70%)", filter: "blur(40px)" }}
       />
       <div
         ref={mistBRef}
-        className="pointer-events-none absolute inset-0"
+        className="pre-anim pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse 50% 35% at 70% 40%, rgba(255,255,255,0.45), transparent 70%)", filter: "blur(50px)" }}
       />
       <div
         ref={mistCRef}
-        className="pointer-events-none absolute inset-0"
+        className="pre-anim pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse 70% 30% at 50% 80%, rgba(255,255,255,0.4), transparent 70%)", filter: "blur(35px)" }}
       />
 
@@ -266,7 +266,7 @@ export default function Hero() {
           Paintings sit in their own columns so they can never overlap the fresco. */}
       <div
         ref={frescoWrapRef}
-        className="pointer-events-none absolute inset-x-0 bottom-0 top-[16vh] z-30 flex items-center justify-center px-[3vw] pb-[3vh]"
+        className="pre-anim pointer-events-none absolute inset-x-0 bottom-0 top-[16vh] z-30 flex items-center justify-center px-[3vw] pb-[3vh]"
       >
         <div
           ref={frameRef}
