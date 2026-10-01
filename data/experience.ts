@@ -47,7 +47,7 @@ export const experience: Experience[] = [
     accession: "ACC. EDU-01",
     role: "Bachelor of Science in Information Technology",
     org: "Polytechnic University of the Philippines · Bansud Campus, Oriental Mindoro",
-    period: "Undergraduate degree",
+    period: "Graduated",
     tech: "Information Technology",
     summary: "BSIT graduate.",
   },
