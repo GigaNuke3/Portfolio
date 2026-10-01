@@ -4,53 +4,80 @@ import FeaturedProject from "@/components/FeaturedProject";
 
 export default function Projects() {
   return (
-    <section
-      id="projects"
-      className="border-b-4 border-ink px-6 py-24 sm:px-12"
-    >
-      <h2 className="reveal font-display text-3xl sm:text-4xl">Projects</h2>
+    <section id="projects" className="border-b-4 border-ink px-6 py-24 sm:px-12 sm:py-32">
+      <div className="mx-auto max-w-6xl">
+        <header className="reveal border-b-2 border-ink pb-6">
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-ink/60">
+            Exhibition 01 — Digital Works
+          </p>
+          <h2 className="mt-3 font-display text-4xl uppercase tracking-tight sm:text-6xl">
+            Selected Works
+          </h2>
+          <p className="mt-2 font-mono text-xs uppercase tracking-[0.3em]">Projects / Exhibition</p>
+        </header>
 
-      <div className="mt-10">
-        <FeaturedProject />
-      </div>
+        <div className="mt-12">
+          <FeaturedProject />
+        </div>
 
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <div
-            key={project.title}
-            className="reveal border-4 border-ink bg-plaster brutal-shadow"
-          >
-            <Image
-              src={project.image}
-              alt={project.title}
-              width={400}
-              height={176}
-              className="h-44 w-full border-b-4 border-ink object-cover"
-            />
-            <div className="p-6">
-              <h3 className="font-display text-xl">{project.title}</h3>
-              <p className="mt-3 text-sm">{project.description}</p>
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {project.stack.map((tech) => (
-                  <li
-                    key={tech}
-                    className="border-2 border-ink px-2 py-0.5 text-xs uppercase tracking-wide text-ink"
-                  >
-                    {tech}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-block border-2 border-ink px-4 py-1.5 font-mono text-xs uppercase tracking-wide hover:bg-ink hover:text-plaster"
+        <div className="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2">
+          {projects.map((project, i) => {
+            const flipped = i % 2 === 1;
+            return (
+              <article
+                key={project.title}
+                className={`reveal flex gap-6 ${flipped ? "flex-col-reverse md:mt-14" : "flex-col"}`}
               >
-                GitHub / Demo
-              </a>
-            </div>
-          </div>
-        ))}
+                <div
+                  className={`brutal-shadow-sm relative w-full border-2 border-ink ${
+                    flipped ? "aspect-[16/10]" : "aspect-[4/3]"
+                  }`}
+                >
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(min-width: 768px) 45vw, 90vw"
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="border-t-4 border-ink pt-4">
+                  <p className="font-mono text-xs uppercase tracking-[0.3em] text-ink/60">
+                    {String(i + 2).padStart(2, "0")} / Supporting Work
+                  </p>
+                  <h3 className="mt-2 font-display text-3xl uppercase tracking-tight">
+                    {project.title}
+                  </h3>
+                  <p className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-ink/60">
+                    {project.kind}
+                  </p>
+                  <p className="mt-3 max-w-[44ch] text-sm leading-relaxed">{project.description}</p>
+
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {project.stack.map((tech) => (
+                      <li
+                        key={tech}
+                        className="border border-ink px-2 py-0.5 font-mono text-xs uppercase tracking-wide"
+                      >
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-block border-2 border-ink px-4 py-1.5 font-mono text-xs uppercase tracking-wide hover:bg-ink hover:text-plaster"
+                  >
+                    GitHub / Demo ↗
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

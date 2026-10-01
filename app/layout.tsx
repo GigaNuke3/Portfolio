@@ -18,6 +18,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${jetbrainsMono.variable} h-full`}
+      suppressHydrationWarning
     >
       <head>
         <script

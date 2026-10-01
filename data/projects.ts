@@ -1,5 +1,6 @@
 export type Project = {
   title: string;
+  kind: string;
   description: string;
   stack: string[];
   image: string;
@@ -8,12 +9,10 @@ export type Project = {
 
 export type FeaturedProject = {
   index: string;
-  badge: string;
   category: string;
   title: string;
   description: string;
   highlights: string[];
-  tools: string[];
   techStack: string[];
   images: string[];
   link: string;
@@ -21,20 +20,18 @@ export type FeaturedProject = {
 
 export const featuredProject: FeaturedProject = {
   index: "01",
-  badge: "Frontier Mobile Application",
-  category: "Mobile Application · AI Flashcards",
+  category: "Mobile Application · AI",
   title: "Axie Flash",
   description:
-    "An Instagram-Stories-style swipe/timer flashcard game with AI-generated cards — offline-first free play, plus a cloud-AI premium tier for generating cards from your own notes.",
+    "An Instagram-Stories-style swipe/timer flashcard game with AI-generated cards.",
   highlights: [
-    "Swipe/timer Stories-style flashcard gameplay backed by a card economy and daily budget.",
-    "OCR scanning (ML Kit) turns photos of notes into flashcards, fully on-device.",
-    "Cloud AI tier generates cards from text, images, or documents via DeepSeek.",
-    "Offline-first free tier with a local question bank — works with zero network.",
-    "Google Sign-In with anonymous-first auth and server-verified purchases.",
-    "PDF / PPT / Word document parsing to generate cards from existing study materials.",
+    "AI-generated flashcards",
+    "Offline-first free play",
+    "Cloud AI premium tier",
+    "OCR scanning",
+    "Document parsing",
+    "Local question bank",
   ],
-  tools: ["OkHttp", "ML Kit OCR", "Credentials API", "org.json", "Laravel Sanctum"],
   techStack: ["Kotlin", "Jetpack Compose", "Material 3", "Laravel", "MySQL", "DeepSeek API"],
   images: [
     "/images/projects/axie-flash/01-home.jpg",
@@ -49,16 +46,18 @@ export const featuredProject: FeaturedProject = {
 export const projects: Project[] = [
   {
     title: "Callama",
-    description: "Desktop/local AI application built around Ollama.",
+    kind: "Offline AI Desktop Application",
+    description: "Offline/local AI desktop application built around Ollama.",
     stack: ["Electron", "Ollama", "Local LLMs"],
     image: "/images/projects/callama.jpg",
     link: "#",
   },
   {
-    title: "Library Management Information System",
+    title: "E-LIB",
+    kind: "Library Management Information System",
     description: "A library management system with appointment functionality.",
     stack: ["PHP", "MySQL"],
     image: "/images/projects/lmis.jpg",
-    link: "#",
+    link: "https://e-librari.online",
   },
 ];

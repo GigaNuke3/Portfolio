@@ -16,7 +16,7 @@ export default function Header() {
     <header className="fixed inset-x-0 top-0 z-50 bg-plaster">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-12">
         <a href="#home" className="font-display text-xl text-ink">
-
+          ECO
         </a>
         <nav className="flex gap-4 overflow-x-auto font-mono text-xs uppercase tracking-widest sm:gap-6">
           {navItems.map((item) => (

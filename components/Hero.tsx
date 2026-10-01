@@ -28,6 +28,10 @@ export default function Hero() {
   const frescoImgRef = useRef<HTMLImageElement>(null);
   const introTitleRef = useRef<HTMLDivElement>(null);
   const outroTitleRef = useRef<HTMLDivElement>(null);
+  const deepseekRef = useRef<HTMLImageElement>(null);
+  const chatgptRef = useRef<HTMLImageElement>(null);
+  const grokRef = useRef<HTMLImageElement>(null);
+  const geminiRef = useRef<HTMLImageElement>(null);
 
   useGSAP(
     () => {
@@ -42,6 +46,7 @@ export default function Hero() {
         gsap.set(frescoWrapRef.current, { opacity: 0 });
         gsap.set(frescoImgRef.current, { scale: START_SCALE, transformOrigin: GAP_ORIGIN });
         gsap.set(outroTitleRef.current, { opacity: 0, y: 40 });
+        gsap.set([deepseekRef.current, chatgptRef.current, grokRef.current, geminiRef.current], { opacity: 0 });
         gsap.set(document.querySelector("header"), { opacity: 0 });
 
         const tl = gsap.timeline({
@@ -79,7 +84,12 @@ export default function Hero() {
           .fromTo(frescoWrapRef.current, { opacity: 0 }, { opacity: 1, duration: 2 }, 13)
           .to(frescoImgRef.current, { scale: 1, transformOrigin: "50% 50%", ease: "none", duration: 6 }, 13)
           .to(document.querySelector("header"), { opacity: 1, ease: "none", duration: 2 }, 19)
-          .fromTo(outroTitleRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 2 }, 19);
+          .fromTo(outroTitleRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 2 }, 19)
+          // Gallery paintings — settle into place one by one as the fresco finishes
+          .fromTo(deepseekRef.current, { opacity: 0, x: -20, y: 10 }, { opacity: 1, x: 0, y: 0, duration: 1.4, ease: "power2.out" }, 19.2)
+          .fromTo(grokRef.current, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 19.6)
+          .fromTo(chatgptRef.current, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 20)
+          .fromTo(geminiRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.4, ease: "power2.out" }, 20.4);
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
@@ -90,6 +100,7 @@ export default function Hero() {
         gsap.set(frescoWrapRef.current, { opacity: 1 });
         gsap.set(frescoImgRef.current, { scale: 1, transformOrigin: GAP_ORIGIN });
         gsap.set(outroTitleRef.current, { opacity: 1, y: 0 });
+        gsap.set([deepseekRef.current, chatgptRef.current, grokRef.current, geminiRef.current], { opacity: 1 });
       });
 
       return () => mm.revert();
@@ -163,44 +174,74 @@ export default function Hero() {
         style={{ background: "radial-gradient(ellipse 70% 30% at 50% 80%, rgba(255,255,255,0.4), transparent 70%)", filter: "blur(35px)" }}
       />
 
+      {/* ponytail: bounded gallery wall — left paintings | fresco + placard | right paintings.
+          Paintings sit in their own columns so they can never overlap the fresco. */}
       <div
         ref={frescoWrapRef}
-        className="pointer-events-none absolute inset-0 flex items-center justify-center p-[3vw]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-[16vh] z-30 flex items-center justify-center px-[3vw] pb-[3vh]"
       >
-        <div className="brutal-shadow relative h-full w-full border-[10px] border-ink bg-plaster p-3 sm:p-5">
-          <img
-            ref={frescoImgRef}
-            src="/fresco.jpg"
-            alt="Renaissance fresco parody of The Creation of Adam, with a pixel-art sprite reaching toward Adam's hand"
-            className="h-full w-full object-contain will-change-transform"
-          />
+        <div className="relative flex h-full max-h-[780px] w-full max-w-[1480px] gap-4 border-[10px] border-ink bg-plaster p-4 lg:gap-6 lg:p-6">
+          <div className="relative hidden w-[21%] shrink-0 lg:block">
+            <img
+              ref={deepseekRef}
+              src="/deepseek.png"
+              alt="AI-themed Renaissance painting (DeepSeek)"
+              className="brutal-shadow-sm absolute left-[2%] top-[3%] z-10 w-[86%] -rotate-6"
+            />
+            <img
+              ref={chatgptRef}
+              src="/chatgpt.png"
+              alt="AI-themed Renaissance painting (ChatGPT)"
+              className="brutal-shadow-sm absolute right-0 top-[30%] z-20 w-[68%] rotate-3"
+            />
+          </div>
+
+          <div className="flex min-w-0 flex-1 flex-col items-center">
+            <div className="flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden p-3">
+              <img
+                ref={frescoImgRef}
+                src="/fresco.jpg"
+                alt="Renaissance fresco parody of The Creation of Adam, with a pixel-art sprite reaching toward Adam's hand"
+                className="brutal-shadow max-h-full max-w-full will-change-transform"
+              />
+            </div>
+
+            <div
+              ref={outroTitleRef}
+              className="mt-4 shrink-0 border border-ink bg-plaster px-8 py-3 text-center outline outline-1 outline-offset-[3px] outline-ink"
+            >
+              <h1 className="font-display text-lg uppercase tracking-[0.18em] text-ink sm:text-2xl">
+                Edil Con L. Gorospe
+              </h1>
+              <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.3em] text-ink sm:text-xs">
+                Web Developer · AI Engineer
+              </p>
+            </div>
+          </div>
+
+          <div className="relative hidden w-[21%] shrink-0 lg:block">
+            <img
+              ref={grokRef}
+              src="/grok.png"
+              alt="AI-themed surreal painting (Grok)"
+              className="brutal-shadow-sm absolute right-[2%] top-[8%] z-10 w-[94%] rotate-[5deg]"
+            />
+            <img
+              ref={geminiRef}
+              src="/gemini.png"
+              alt="AI-themed Renaissance painting (Gemini)"
+              className="brutal-shadow-sm absolute bottom-[4%] left-[6%] z-20 w-[74%] -rotate-[4deg]"
+            />
+          </div>
         </div>
       </div>
 
       <div
         ref={introTitleRef}
-        className="pointer-events-none absolute inset-0 flex items-center justify-center text-center"
+        className="pointer-events-none absolute inset-0 z-[60] flex items-center justify-center text-center"
       >
         <p className="border-y-2 border-ink/70 px-6 py-3 font-mono text-sm uppercase tracking-[0.3em] text-ink sm:text-base">
           This portfolio presents to you…
-        </p>
-      </div>
-
-      <div
-        ref={outroTitleRef}
-        className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center"
-      >
-        <h1 className="brutal-shadow-sm border-2 border-ink bg-plaster px-4 py-2 font-display text-3xl tracking-tight text-ink sm:text-5xl">
-          Edil Con L. Gorospe
-        </h1>
-        <div className="brutal-shadow-sm mt-6 flex items-center gap-2 border-2 border-ink bg-plaster px-4 py-2">
-          <span className="text-ink">■</span>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink sm:text-sm">
-            Web Developer | AI Engineer
-          </p>
-        </div>
-        <p className="mt-10 font-mono text-xs uppercase tracking-widest text-ink animate-bounce">
-          Scroll to enter ↓
         </p>
       </div>
     </div>

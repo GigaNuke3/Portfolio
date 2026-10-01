@@ -42,12 +42,22 @@ export default function Contact() {
 
       <ul className="reveal mt-10 flex flex-wrap justify-center gap-4 font-mono text-sm uppercase tracking-wide">
         <li>
-          <a href="#" className="border-2 border-ink px-4 py-2 hover:bg-ink hover:text-plaster">
+          <a
+            href="https://github.com/GigaNuke3"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-2 border-ink px-4 py-2 hover:bg-ink hover:text-plaster"
+          >
             GitHub
           </a>
         </li>
         <li>
-          <a href="#" className="border-2 border-ink px-4 py-2 hover:bg-ink hover:text-plaster">
+          <a
+            href="https://www.linkedin.com/in/edil-con-l-gorospe-383a8a303/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-2 border-ink px-4 py-2 hover:bg-ink hover:text-plaster"
+          >
             LinkedIn
           </a>
         </li>

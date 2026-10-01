@@ -4,120 +4,110 @@ import { useState } from "react";
 import Image from "next/image";
 import { featuredProject } from "@/data/projects";
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 export default function FeaturedProject() {
   const [index, setIndex] = useState(0);
-  const { images } = featuredProject;
+  const { images, techStack } = featuredProject;
 
   function go(direction: 1 | -1) {
     setIndex((i) => (i + direction + images.length) % images.length);
   }
 
   return (
-    <div className="reveal mb-16">
-      <div className="flex items-center gap-3">
-        <span className="border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold">
-          {featuredProject.index}
-        </span>
-        <span className="font-mono text-xs uppercase tracking-widest text-ink">
-          {featuredProject.badge}
-        </span>
-        <span
-          title="A frontier application — an AI-native product designed and built end-to-end."
-          className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 border-ink font-mono text-[10px]"
-        >
-          i
-        </span>
-      </div>
+    <div className="reveal">
+      <p className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em]">
+        <span>{featuredProject.index} / Featured Work</span>
+        <span className="h-px flex-1 bg-ink" />
+      </p>
 
-      <div className="brutal-shadow mt-4 grid gap-0 border-4 border-ink bg-plaster lg:grid-cols-2">
-        <div className="relative border-b-4 border-ink p-6 lg:border-b-0 lg:border-r-4">
-          <div className="relative mx-auto aspect-[9/16] w-full max-w-[260px] overflow-hidden border-2 border-ink">
+      <div className="mt-8 grid items-center gap-10 border-2 border-ink p-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-14 md:p-10">
+        <div className="mx-auto w-full max-w-[280px] md:max-w-[320px]">
+          <div className="brutal-shadow-sm relative aspect-[9/16] w-full border-2 border-ink">
             <Image
               src={images[index]}
               alt={`${featuredProject.title} screenshot ${index + 1}`}
               fill
+              sizes="(min-width: 768px) 320px, 280px"
               className="object-cover"
             />
           </div>
 
-          <button
-            type="button"
-            aria-label="Previous screenshot"
-            onClick={() => go(-1)}
-            className="absolute left-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border-2 border-ink bg-plaster hover:bg-ink hover:text-plaster"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            aria-label="Next screenshot"
-            onClick={() => go(1)}
-            className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border-2 border-ink bg-plaster hover:bg-ink hover:text-plaster"
-          >
-            ›
-          </button>
-
-          <div className="mt-4 flex justify-center gap-2">
-            {images.map((img, i) => (
-              <button
-                key={img}
-                type="button"
-                aria-label={`Go to screenshot ${i + 1}`}
-                onClick={() => setIndex(i)}
-                className={`h-2.5 w-2.5 border-2 border-ink ${i === index ? "bg-ink" : "bg-plaster"}`}
-              />
-            ))}
+          <div className="mt-6 flex items-center justify-between font-mono text-xs uppercase tracking-[0.2em]">
+            <button
+              type="button"
+              aria-label="Previous screenshot"
+              onClick={() => go(-1)}
+              className="px-1 hover:underline"
+            >
+              ←
+            </button>
+            <span>
+              {pad(index + 1)} / {pad(images.length)}
+            </span>
+            <button
+              type="button"
+              aria-label="Next screenshot"
+              onClick={() => go(1)}
+              className="px-1 hover:underline"
+            >
+              →
+            </button>
           </div>
         </div>
 
-        <div className="p-6 sm:p-8">
-          <p className="font-mono text-xs uppercase tracking-widest text-ink/60">
+        <div>
+          <p className="border-b border-ink pb-3 font-mono text-xs uppercase tracking-[0.25em]">
             {featuredProject.category}
           </p>
-          <h3 className="mt-1 font-display text-2xl sm:text-3xl">{featuredProject.title}</h3>
-          <p className="mt-4 text-sm leading-relaxed">{featuredProject.description}</p>
+          <h3 className="mt-5 font-display text-4xl uppercase tracking-tight sm:text-5xl">
+            {featuredProject.title}
+          </h3>
 
-          <div className="mt-6 border-t-2 border-ink pt-4">
-            <p className="font-mono text-xs uppercase tracking-widest text-ink/60">Highlights</p>
-            <ul className="mt-3 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+          <section className="mt-6">
+            <h4 className="font-mono text-xs uppercase tracking-[0.25em] text-ink/60">Description</h4>
+            <p className="mt-2 max-w-[44ch] text-base leading-relaxed">{featuredProject.description}</p>
+          </section>
+
+          <section className="mt-6">
+            <h4 className="font-mono text-xs uppercase tracking-[0.25em] text-ink/60">Highlights</h4>
+            <ul className="mt-2 grid gap-x-8 gap-y-1 text-sm sm:grid-cols-2">
               {featuredProject.highlights.map((item) => (
                 <li key={item} className="flex gap-2">
-                  <span>●</span>
+                  <span aria-hidden>•</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
 
-          <div className="mt-6">
-            <p className="font-mono text-xs uppercase tracking-widest text-ink/60">Tools</p>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {featuredProject.tools.map((tool) => (
-                <li key={tool} className="border-2 border-ink px-2 py-0.5 text-xs">
-                  {tool}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-6">
-            <p className="font-mono text-xs uppercase tracking-widest text-ink/60">Tech Stack</p>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {featuredProject.techStack.map((tech) => (
-                <li key={tech} className="border-2 border-ink px-2 py-0.5 text-xs">
-                  {tech}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <section className="mt-6">
+            <h4 className="font-mono text-xs uppercase tracking-[0.25em] text-ink/60">
+              Technical Details
+            </h4>
+            <dl className="mt-2 space-y-1 text-sm">
+              <div className="flex gap-4">
+                <dt className="w-16 shrink-0 font-mono text-xs uppercase tracking-[0.2em] text-ink/60">
+                  Medium
+                </dt>
+                <dd>{techStack.slice(0, 3).join(" · ")}</dd>
+              </div>
+              <div className="flex gap-4">
+                <dt className="w-16 shrink-0 font-mono text-xs uppercase tracking-[0.2em] text-ink/60">
+                  Tools
+                </dt>
+                <dd>{techStack.slice(3).join(" · ")}</dd>
+              </div>
+            </dl>
+          </section>
 
           <a
             href={featuredProject.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-block border-2 border-ink px-4 py-1.5 font-mono text-xs uppercase tracking-wide hover:bg-ink hover:text-plaster"
+            className="mt-8 inline-block border-2 border-ink px-4 py-1.5 font-mono text-xs uppercase tracking-wide hover:bg-ink hover:text-plaster"
           >
-            Live website ↗
+            GitHub / Demo ↗
           </a>
         </div>
       </div>
