@@ -1,32 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --plaster: #ede3d2;
-  --ink: #201a14;
-  --terracotta: #bf4e2b;
-  --ochre: #c98f28;
-  --faded-blue: #3f6069;
+  --plaster: #ffffff;
+  --ink: #000000;
   --border-w: 4px;
 }
 
 @theme inline {
   --color-plaster: var(--plaster);
   --color-ink: var(--ink);
-  --color-terracotta: var(--terracotta);
-  --color-ochre: var(--ochre);
-  --color-faded-blue: var(--faded-blue);
-  --font-display: var(--font-archivo-black);
-  --font-mono: var(--font-space-mono);
+  --font-display: var(--font-jetbrains-mono);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --plaster: #19140f;
-    --ink: #ede3d2;
-    --terracotta: #e06a42;
-    --ochre: #e0ac3f;
-    --faded-blue: #7aa3ad;
+  :root:not([data-theme="light"]) {
+    --plaster: #000000;
+    --ink: #ffffff;
   }
+}
+
+:root[data-theme="dark"] {
+  --plaster: #000000;
+  --ink: #ffffff;
+}
+
+:root[data-theme="light"] {
+  --plaster: #ffffff;
+  --ink: #000000;
 }
 
 * {
@@ -42,4 +43,27 @@ body {
 /* ponytail: hard offset shadow, no blur — brutalist marker, not a design-token system */
 .brutal-shadow {
   box-shadow: 8px 8px 0 0 var(--ink);
+}
+
+.brutal-shadow-sm {
+  box-shadow: 4px 4px 0 0 var(--ink);
+}
+
+/* JetBrains Mono's regular weight reads thin at headline sizes — bold it by default */
+.font-display {
+  font-weight: 800;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* content is duplicated in the DOM so -50% is exactly one loop, for a seamless wrap */
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }
