@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import RoomLabel from "@/components/RoomLabel";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -31,13 +32,19 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="px-6 py-24 text-center sm:px-12 sm:py-32"
+      data-room="VII"
+      data-room-name="The Exhibition Desk"
+      data-sketch="<Contact />"
+      className="relative px-6 py-24 text-center sm:px-12 sm:py-32"
     >
-      <h2 className="reveal font-display text-4xl sm:text-6xl">
-        Let&apos;s build something.
+      <div className="mx-auto max-w-6xl text-left">
+        <RoomLabel room="VII" name="The Exhibition Desk" />
+      </div>
+      <h2 className="reveal font-display text-4xl uppercase sm:text-6xl">
+        Leave a note at the desk.
       </h2>
       <p className="reveal mt-4 font-mono text-xs uppercase tracking-[0.3em] text-ink">
-        ECO · IT Developer · AI · Software
+        Let&apos;s build something · Web Developer · AI Engineer
       </p>
 
       <ul className="reveal mt-10 flex flex-wrap justify-center gap-4 font-mono text-sm uppercase tracking-wide">
@@ -87,21 +94,21 @@ export default function Contact() {
         <input
           name="name"
           required
-          placeholder="Name"
+          placeholder="Your name"
           className="border-4 border-ink bg-plaster px-4 py-3 font-mono placeholder:text-ink/60 focus:outline-none focus:ring-4 focus:ring-ink"
         />
         <input
           name="email"
           type="email"
           required
-          placeholder="Email"
+          placeholder="Your email"
           className="border-4 border-ink bg-plaster px-4 py-3 font-mono placeholder:text-ink/60 focus:outline-none focus:ring-4 focus:ring-ink"
         />
         <textarea
           name="message"
           required
           rows={5}
-          placeholder="Message"
+          placeholder="Your note to the curator"
           className="border-4 border-ink bg-plaster px-4 py-3 font-mono placeholder:text-ink/60 focus:outline-none focus:ring-4 focus:ring-ink"
         />
         <button
@@ -109,11 +116,11 @@ export default function Contact() {
           disabled={status === "sending"}
           className="brutal-shadow border-4 border-ink bg-ink px-6 py-3 font-mono uppercase tracking-wide text-plaster hover:bg-plaster hover:text-ink disabled:opacity-60"
         >
-          {status === "sending" ? "Sending…" : "Send"}
+          {status === "sending" ? "Leaving note…" : "Leave note"}
         </button>
         {status === "sent" && (
           <p className="font-mono text-sm text-ink">
-            Message sent — thanks, I&apos;ll get back to you.
+            Note received — thank you, I&apos;ll get back to you.
           </p>
         )}
         {status === "error" && (

@@ -67,3 +67,78 @@ body {
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
+
+/* ---------- The Eco Collection: shared exhibition styles ---------- */
+
+@keyframes plaque-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-plaque-in {
+  animation: plaque-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-plaque-in,
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Easter egg — infrared reflectography: conservators image paintings in IR to see the
+   artist's hidden underdrawing. Here the page shows its own underdrawing: the components. */
+:root[data-ir] {
+  --plaster: #0e1b2b;
+  --ink: #d6e6f5;
+}
+
+:root[data-ir] body {
+  background-image:
+    linear-gradient(rgb(214 230 245 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(214 230 245 / 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+:root[data-ir] img {
+  filter: grayscale(1) contrast(1.35) brightness(0.85);
+}
+
+:root[data-ir] [data-sketch] {
+  outline: 1px dashed var(--ink);
+  outline-offset: -8px;
+}
+
+:root[data-ir] [data-sketch]::after {
+  content: attr(data-sketch);
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 80;
+  padding: 2px 6px;
+  background: var(--ink);
+  color: var(--plaster);
+  font: 11px var(--font-mono), monospace;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+
+:root[data-ir] body::after {
+  content: "INFRARED REFLECTOGRAPHY · the underdrawing of this exhibition · Esc to restore";
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 95;
+  padding: 6px 10px;
+  border: 1px solid var(--ink);
+  background: var(--plaster);
+  color: var(--ink);
+  font: 11px var(--font-mono), monospace;
+  letter-spacing: 0.15em;
+}

@@ -1,9 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { exhibits, type Exhibit, type ExhibitId } from "@/data/exhibits";
+import ExhibitDialog from "@/components/ExhibitDialog";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +13,52 @@ gsap.registerPlugin(ScrollTrigger);
    for fingertip/sprite), not pixel-measured — nudge GAP_ORIGIN if the opening crop looks off */
 const GAP_ORIGIN = "60% 44%";
 const START_SCALE = 3.2;
+
+// A gallery painting is a button: hover/focus shows its wall label, click opens its exhibit card.
+function Painting({
+  id,
+  buttonRef,
+  depth,
+  position,
+  rotate,
+  labelAbove,
+  onOpen,
+}: {
+  id: ExhibitId;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
+  depth: number;
+  position: string;
+  rotate: string;
+  labelAbove?: boolean;
+  onOpen: (exhibit: Exhibit) => void;
+}) {
+  const exhibit = exhibits[id];
+  return (
+    <button
+      ref={buttonRef}
+      type="button"
+      data-cursor="View"
+      aria-label={`Exhibit ${exhibit.no}: ${exhibit.title}, ${exhibit.after}`}
+      onClick={() => onOpen(exhibit)}
+      className={`group pointer-events-auto absolute block text-left hover:z-30 focus-visible:z-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink ${position}`}
+    >
+      <span data-depth={depth} className="block">
+        <img src={`/${id}.png`} alt="" className={`brutal-shadow-sm block w-full ${rotate}`} />
+        <span
+          className={`pointer-events-none absolute left-0 w-full border border-ink bg-plaster px-3 py-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 ${
+            labelAbove ? "bottom-full mb-3" : "top-full mt-3"
+          }`}
+        >
+          <span className="block font-mono text-[9px] uppercase tracking-[0.25em] text-ink/60">
+            No. {exhibit.no} · {exhibit.after}
+          </span>
+          <span className="mt-0.5 block font-display text-sm uppercase leading-tight text-ink">{exhibit.title}</span>
+          <span className="mt-0.5 block text-xs text-ink">{exhibit.meaning}</span>
+        </span>
+      </span>
+    </button>
+  );
+}
 
 export default function Hero() {
   const pinRef = useRef<HTMLDivElement>(null);
@@ -28,10 +76,13 @@ export default function Hero() {
   const frescoImgRef = useRef<HTMLImageElement>(null);
   const introTitleRef = useRef<HTMLDivElement>(null);
   const outroTitleRef = useRef<HTMLDivElement>(null);
-  const deepseekRef = useRef<HTMLImageElement>(null);
-  const chatgptRef = useRef<HTMLImageElement>(null);
-  const grokRef = useRef<HTMLImageElement>(null);
-  const geminiRef = useRef<HTMLImageElement>(null);
+  const deepseekRef = useRef<HTMLButtonElement>(null);
+  const chatgptRef = useRef<HTMLButtonElement>(null);
+  const grokRef = useRef<HTMLButtonElement>(null);
+  const geminiRef = useRef<HTMLButtonElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const lampRef = useRef<HTMLDivElement>(null);
+  const [exhibit, setExhibit] = useState<Exhibit | null>(null);
 
   useGSAP(
     () => {
@@ -43,10 +94,10 @@ export default function Hero() {
           { opacity: 0 },
         );
         gsap.set(cloud1Ref.current, { opacity: 1, scale: 1.1 });
-        gsap.set(frescoWrapRef.current, { opacity: 0 });
+        gsap.set(frescoWrapRef.current, { autoAlpha: 0 });
         gsap.set(frescoImgRef.current, { scale: START_SCALE, transformOrigin: GAP_ORIGIN });
         gsap.set(outroTitleRef.current, { opacity: 0, y: 40 });
-        gsap.set([deepseekRef.current, chatgptRef.current, grokRef.current, geminiRef.current], { opacity: 0 });
+        gsap.set([deepseekRef.current, chatgptRef.current, grokRef.current, geminiRef.current], { autoAlpha: 0 });
         gsap.set(document.querySelector("header"), { opacity: 0 });
 
         const tl = gsap.timeline({
@@ -81,15 +132,49 @@ export default function Hero() {
           .to(cloud2Ref.current, { scale: 1.3, opacity: 0, ease: "none", duration: 4 }, 11)
           .to([mistARef.current, mistBRef.current, mistCRef.current], { opacity: 0, duration: 3, stagger: 0.4 }, 14)
           // The fresco — gallery-framed, zooming out of the fingertip/sprite gap
-          .fromTo(frescoWrapRef.current, { opacity: 0 }, { opacity: 1, duration: 2 }, 13)
+          .fromTo(frescoWrapRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 2 }, 13)
           .to(frescoImgRef.current, { scale: 1, transformOrigin: "50% 50%", ease: "none", duration: 6 }, 13)
           .to(document.querySelector("header"), { opacity: 1, ease: "none", duration: 2 }, 19)
           .fromTo(outroTitleRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 2 }, 19)
           // Gallery paintings — settle into place one by one as the fresco finishes
-          .fromTo(deepseekRef.current, { opacity: 0, x: -20, y: 10 }, { opacity: 1, x: 0, y: 0, duration: 1.4, ease: "power2.out" }, 19.2)
-          .fromTo(grokRef.current, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 19.6)
-          .fromTo(chatgptRef.current, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 20)
-          .fromTo(geminiRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.4, ease: "power2.out" }, 20.4);
+          .fromTo(deepseekRef.current, { autoAlpha: 0, x: -20, y: 10 }, { autoAlpha: 1, x: 0, y: 0, duration: 1.4, ease: "power2.out" }, 19.2)
+          .fromTo(grokRef.current, { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 19.6)
+          .fromTo(chatgptRef.current, { autoAlpha: 0, scale: 0.92 }, { autoAlpha: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 20)
+          .fromTo(geminiRef.current, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 1.4, ease: "power2.out" }, 20.4);
+      });
+
+      // The wall comes alive: paintings drift at different depths, and a warm lamp follows the visitor.
+      mm.add("(prefers-reduced-motion: no-preference) and (pointer: fine)", () => {
+        const movers = gsap.utils.toArray<HTMLElement>("[data-depth]").map((el) => ({
+          depth: Number(el.dataset.depth),
+          x: gsap.quickTo(el, "x", { duration: 1.2, ease: "power3" }),
+          y: gsap.quickTo(el, "y", { duration: 1.2, ease: "power3" }),
+        }));
+        const lamp = lampRef.current;
+        const frame = frameRef.current;
+        if (!lamp || !frame) return;
+        const lampX = gsap.quickTo(lamp, "x", { duration: 0.8, ease: "power3" });
+        const lampY = gsap.quickTo(lamp, "y", { duration: 0.8, ease: "power3" });
+        const lampO = gsap.quickTo(lamp, "opacity", { duration: 0.6 });
+
+        function onMove(e: PointerEvent) {
+          const nx = e.clientX / window.innerWidth - 0.5;
+          const ny = e.clientY / window.innerHeight - 0.5;
+          for (const m of movers) {
+            m.x(-nx * m.depth);
+            m.y(-ny * m.depth);
+          }
+          const r = frame!.getBoundingClientRect();
+          const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+          lampO(inside ? 1 : 0);
+          if (inside) {
+            lampX(e.clientX - r.left);
+            lampY(e.clientY - r.top);
+          }
+        }
+
+        window.addEventListener("pointermove", onMove);
+        return () => window.removeEventListener("pointermove", onMove);
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
@@ -97,10 +182,10 @@ export default function Hero() {
           [cloud1Ref.current, birdGroup1Ref.current, bird2aRef.current, cloud2Ref.current, bird2bRef.current, birdGroup2Ref.current, mistARef.current, mistBRef.current, mistCRef.current, introTitleRef.current],
           { opacity: 0 },
         );
-        gsap.set(frescoWrapRef.current, { opacity: 1 });
+        gsap.set(frescoWrapRef.current, { autoAlpha: 1 });
         gsap.set(frescoImgRef.current, { scale: 1, transformOrigin: GAP_ORIGIN });
         gsap.set(outroTitleRef.current, { opacity: 1, y: 0 });
-        gsap.set([deepseekRef.current, chatgptRef.current, grokRef.current, geminiRef.current], { opacity: 1 });
+        gsap.set([deepseekRef.current, chatgptRef.current, grokRef.current, geminiRef.current], { autoAlpha: 1 });
       });
 
       return () => mm.revert();
@@ -111,6 +196,9 @@ export default function Hero() {
   return (
     <div
       id="home"
+      data-room="I"
+      data-room-name="Entrance"
+      data-sketch="<Hero />"
       ref={pinRef}
       className="relative h-screen w-full overflow-hidden bg-plaster"
     >
@@ -180,24 +268,24 @@ export default function Hero() {
         ref={frescoWrapRef}
         className="pointer-events-none absolute inset-x-0 bottom-0 top-[16vh] z-30 flex items-center justify-center px-[3vw] pb-[3vh]"
       >
-        <div className="relative flex h-full max-h-[780px] w-full max-w-[1480px] gap-4 border-[10px] border-ink bg-plaster p-4 lg:gap-6 lg:p-6">
+        <div
+          ref={frameRef}
+          className="relative flex h-full max-h-[780px] w-full max-w-[1480px] gap-4 border-[10px] border-ink bg-plaster p-4 lg:gap-6 lg:p-6"
+        >
+          <div aria-hidden className="pointer-events-none absolute inset-0 z-30 overflow-hidden">
+            <div
+              ref={lampRef}
+              className="absolute left-0 top-0 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 mix-blend-soft-light"
+              style={{ background: "radial-gradient(circle, rgb(255 214 150 / 0.6), transparent 65%)" }}
+            />
+          </div>
           <div className="relative hidden w-[21%] shrink-0 lg:block">
-            <img
-              ref={deepseekRef}
-              src="/deepseek.png"
-              alt="AI-themed Renaissance painting (DeepSeek)"
-              className="brutal-shadow-sm absolute left-[2%] top-[3%] z-10 w-[86%] -rotate-6"
-            />
-            <img
-              ref={chatgptRef}
-              src="/chatgpt.png"
-              alt="AI-themed Renaissance painting (ChatGPT)"
-              className="brutal-shadow-sm absolute right-0 top-[30%] z-20 w-[68%] rotate-3"
-            />
+            <Painting id="deepseek" buttonRef={deepseekRef} depth={6} position="left-[2%] top-[3%] z-10 w-[86%]" rotate="-rotate-6" onOpen={setExhibit} />
+            <Painting id="chatgpt" buttonRef={chatgptRef} depth={9} position="right-0 top-[30%] z-20 w-[68%]" rotate="rotate-3" onOpen={setExhibit} />
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col items-center">
-            <div className="flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden p-3">
+            <div data-depth="3" className="flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden p-3">
               <img
                 ref={frescoImgRef}
                 src="/fresco.jpg"
@@ -220,18 +308,8 @@ export default function Hero() {
           </div>
 
           <div className="relative hidden w-[21%] shrink-0 lg:block">
-            <img
-              ref={grokRef}
-              src="/grok.png"
-              alt="AI-themed surreal painting (Grok)"
-              className="brutal-shadow-sm absolute right-[2%] top-[8%] z-10 w-[94%] rotate-[5deg]"
-            />
-            <img
-              ref={geminiRef}
-              src="/gemini.png"
-              alt="AI-themed Renaissance painting (Gemini)"
-              className="brutal-shadow-sm absolute bottom-[4%] left-[6%] z-20 w-[74%] -rotate-[4deg]"
-            />
+            <Painting id="grok" buttonRef={grokRef} depth={14} position="right-[2%] top-[8%] z-10 w-[94%]" rotate="rotate-[5deg]" onOpen={setExhibit} />
+            <Painting id="gemini" buttonRef={geminiRef} depth={18} position="bottom-[4%] left-[6%] z-20 w-[74%]" rotate="-rotate-[4deg]" labelAbove onOpen={setExhibit} />
           </div>
         </div>
       </div>
@@ -244,6 +322,8 @@ export default function Hero() {
           This portfolio presents to you…
         </p>
       </div>
+
+      <ExhibitDialog exhibit={exhibit} onClose={() => setExhibit(null)} />
     </div>
   );
 }

@@ -1,4 +1,7 @@
 export type Project = {
+  slug: string;
+  year: string;
+  status: string;
   title: string;
   kind: string;
   description: string;
@@ -8,6 +11,9 @@ export type Project = {
 };
 
 export type FeaturedProject = {
+  slug: string;
+  year: string;
+  status: string;
   index: string;
   category: string;
   title: string;
@@ -19,6 +25,9 @@ export type FeaturedProject = {
 };
 
 export const featuredProject: FeaturedProject = {
+  slug: "axie-flash",
+  year: "2026",
+  status: "In development",
   index: "01",
   category: "Mobile Application · AI",
   title: "Axie Flash",
@@ -45,14 +54,20 @@ export const featuredProject: FeaturedProject = {
 
 export const projects: Project[] = [
   {
+    slug: "callama",
+    year: "2026",
+    status: "Shipped — Windows installer",
     title: "Callama",
     kind: "Offline AI Desktop Application",
     description: "Offline/local AI desktop application built around Ollama.",
-    stack: ["Electron", "Ollama", "Local LLMs"],
+    stack: ["Electron", "Ollama", "SQLite", "Local LLMs"],
     image: "/images/projects/callama.jpg",
     link: "#",
   },
   {
+    slug: "e-lib",
+    year: "2026",
+    status: "Live — e-librari.online",
     title: "E-LIB",
     kind: "Library Management Information System",
     description: "A library management system with appointment functionality.",

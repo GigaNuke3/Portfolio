@@ -1,4 +1,5 @@
 import Image from "next/image";
+import RoomLabel from "@/components/RoomLabel";
 
 const plaques = [
   {
@@ -30,12 +31,19 @@ const works = [
 
 export default function About() {
   return (
-    <section id="about" className="border-b-4 border-ink px-6 py-24 sm:px-12 sm:py-32">
+    <section
+      id="about"
+      data-room="II"
+      data-room-name="The Artist"
+      data-sketch="<About />"
+      className="relative border-b-4 border-ink px-6 py-24 sm:px-12 sm:py-32"
+    >
       <div className="mx-auto max-w-6xl">
+        <RoomLabel room="II" name="The Artist" />
         <header className="reveal flex items-end justify-between gap-4 border-b-2 border-ink pb-4">
           <h2 className="font-display text-4xl uppercase tracking-tight sm:text-6xl">About Me</h2>
           <span className="hidden font-mono text-xs uppercase tracking-[0.3em] sm:block">
-            Exhibition Notes
+            Biography
           </span>
         </header>
 

@@ -17,3 +17,19 @@ export function revealOnScroll(targets: string, scope: Element) {
     });
   });
 }
+
+// Each room's top hairline draws itself like a doorway as the visitor crosses into it.
+export function drawThresholds(scope: Element) {
+  gsap.utils.toArray<HTMLElement>("[data-threshold]", scope).forEach((el) => {
+    gsap.fromTo(
+      el,
+      { scaleX: 0 },
+      {
+        scaleX: 1,
+        duration: 1.4,
+        ease: "power3.inOut",
+        scrollTrigger: { trigger: el, start: "top 85%" },
+      },
+    );
+  });
+}
